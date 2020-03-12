@@ -9,6 +9,7 @@
     "yarpm": "^0.2.1"
   },
   "dependencies": {
-    "@hapi/hapi": "^19.1.1"
+    "@hapi/hapi": "^19.1.1",
+    "debug": "^4.1.1"
   }
 }
