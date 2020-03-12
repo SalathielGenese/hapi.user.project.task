@@ -1,4 +1,4 @@
-const { name: APP_NAME } = require( '../package' );
+const { APP_NAME } = require( './env' );
 const debug = require( 'debug' );
 
 
