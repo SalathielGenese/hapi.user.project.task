@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  upwork.user.project.task:
+    build:
+      context: .
+      target: development
+    volumes:
+    - /opt/app/node_modules
+    - .:/opt/app
