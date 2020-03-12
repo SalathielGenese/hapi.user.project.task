@@ -5,6 +5,7 @@
   "author": "Salathiel Genese <salathielgenese@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "yarpm": "^0.2.1"
   }
 }
