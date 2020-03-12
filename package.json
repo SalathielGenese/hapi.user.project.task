@@ -1,7 +1,7 @@
 {
   "name": "upwork.user.project.task",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "author": "Salathiel Genese <salathielgenese@gmail.com>",
   "license": "MIT",
   "devDependencies": {
