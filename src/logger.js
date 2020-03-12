@@ -14,14 +14,18 @@ function getLogger( scope )
 {
     return function ( ...parameters )
     {
-        const [ , callee ] = new Error().stack.split( /\r?\n/ )[ 2 ].match( CALLEE_REGEX );
+        const [ , , calleeLineTarget ] = new Error().stack.split( LINE_END_REGEX );
+        const [ goto ] = calleeLineTarget.match( GOTO_REGEX );
+        const [ , target ] = goto.match( CALLEE_REGEX );
 
-        debug( `${ APP_NAME }:${ callee }:${ scope }` )( ...parameters );
+        debug( `${ APP_NAME }:${ target }:${ scope }` )( ...parameters );
     };
 }
 
+const LINE_END_REGEX = /\r?\n/;
 const { INIT_CWD } = process.env;
-const CALLEE_REGEX = new RegExp( `${ INIT_CWD.replace( /[-\[](){}:.]/g, '\\$1') }[\\/]\(.*\)\.js:\\d+:\\d+` );
+const GOTO_REGEX = /(?:[A-Z]:)?(?:[\\/]|internal)[^\b\f\n\r\v]+\.js:\d+:\d+/g;
+const CALLEE_REGEX = new RegExp( `(?:${ INIT_CWD.replace( /[-\[](){}:.]/g, '\\$1') }[\\/])?\(.*\)\.js:\\d+:\\d+` );
 
 
 
