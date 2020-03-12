@@ -9,6 +9,7 @@
     "dev": "nodemon --watch src --ext js --exec 'yarpm start'"
   },
   "devDependencies": {
+    "@hapi/code": "^8.0.1",
     "@hapi/lab": "^22.0.4",
     "nodemon": "^2.0.2",
     "yarpm": "^0.2.1"
