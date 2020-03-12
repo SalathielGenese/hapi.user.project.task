@@ -4,6 +4,10 @@
   "main": "src/index.js",
   "author": "Salathiel Genese <salathielgenese@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "env-cmd node .",
+    "dev": "nodemon --watch src --ext js --exec 'yarpm start'"
+  },
   "devDependencies": {
     "nodemon": "^2.0.2",
     "yarpm": "^0.2.1"
