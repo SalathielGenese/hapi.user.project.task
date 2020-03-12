@@ -1,3 +1,4 @@
+const logger = require( './logger' );
 const Hapi = require( '@hapi/hapi' );
 
 
@@ -10,5 +11,5 @@ const Hapi = require( '@hapi/hapi' );
     });
 
     await server.start();
-    console.log( 'Web server started at localhost:3000' );
-})().then( console.error );
+    logger.debug( 'Web server started at localhost:3000' );
+})().catch( logger.error );
