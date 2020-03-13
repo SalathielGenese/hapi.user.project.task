@@ -24,7 +24,7 @@ function getLogger( scope )
 
 const LINE_END_REGEX = /\r?\n/;
 const GOTO_REGEX = /(?:[A-Z]:)?(?:[\\/]|internal)[^\b\f\n\r\v]+\.js:\d+:\d+/g;
-const CALLEE_REGEX = new RegExp( `(?:${ APP_ROOT.replace( /[-\[](){}:.]/g, '\\$1') }[\\/])?\(.*\)\.js:\\d+:\\d+` );
+const CALLEE_REGEX = new RegExp( `(?:${ APP_ROOT.replace( /([\\/\[](){}*:+-]|\\.)/g, '\\$1') }[\\/])?\(.*\)\.js:\\d+:\\d+` );
 
 
 
