@@ -5,9 +5,14 @@
   "author": "Salathiel Genese <salathielgenese@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "lab --coverage",
+    "test": "env-cmd lab --coverage",
     "start": "env-cmd node .",
-    "dev": "nodemon --watch src --ext js --exec 'yarpm test'"
+    "dev": "nodemon"
+  },
+  "nodemonConfig": {
+    "ignore": [ ".git", ".idea", "vscode", "node_modules" ],
+    "exec": "yarpm test",
+    "ext": "js,env,json"
   },
   "devDependencies": {
     "@hapi/code": "^8.0.1",
