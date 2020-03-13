@@ -33,7 +33,7 @@ files
  */
 function registerRoute( path, handler )
 {
-    const { _method = handler.name } = handler;
+    const { method: _method = handler.name } = handler;
     const method = METHODS.includes( _method.toUpperCase() ) ? _method.toUpperCase() : 'GET';
 
     logger.debug( `${ method } "${ path }" (${ handler.name })` );
