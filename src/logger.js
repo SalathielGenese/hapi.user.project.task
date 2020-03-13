@@ -1,4 +1,4 @@
-const { APP_NAME } = require( './env' );
+const { APP_NAME, APP_ROOT } = require( './env' );
 const debug = require( 'debug' );
 
 
@@ -23,9 +23,8 @@ function getLogger( scope )
 }
 
 const LINE_END_REGEX = /\r?\n/;
-const { INIT_CWD } = process.env;
 const GOTO_REGEX = /(?:[A-Z]:)?(?:[\\/]|internal)[^\b\f\n\r\v]+\.js:\d+:\d+/g;
-const CALLEE_REGEX = new RegExp( `(?:${ INIT_CWD.replace( /[-\[](){}:.]/g, '\\$1') }[\\/])?\(.*\)\.js:\\d+:\\d+` );
+const CALLEE_REGEX = new RegExp( `(?:${ APP_ROOT.replace( /[-\[](){}:.]/g, '\\$1') }[\\/])?\(.*\)\.js:\\d+:\\d+` );
 
 
 
