@@ -5,8 +5,9 @@
   "author": "Salathiel Genese <salathielgenese@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "test": "lab --coverage",
     "start": "env-cmd node .",
-    "dev": "nodemon --watch src --ext js --exec 'yarpm start'"
+    "dev": "nodemon --watch src --ext js --exec 'yarpm test'"
   },
   "devDependencies": {
     "@hapi/code": "^8.0.1",
