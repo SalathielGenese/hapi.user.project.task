@@ -10,6 +10,13 @@ const { beforeEach, afterEach, describe, it } = lab;
 describe( 'GET /tasks', () =>
 {
 
+    it( 'responds with HTTP 200', async () =>
+    {
+        expect( response.statusCode ).to.equal( 200 );
+    });
+
+    let response;
+
     afterEach( async () =>
     {
         await server.stop();
@@ -18,14 +25,7 @@ describe( 'GET /tasks', () =>
     beforeEach( async () =>
     {
         await server.start();
-        response = await server.inject({ method: 'GET', url: '/api/tasks' });
-    });
-
-    let response;
-
-    it( 'responds with HTTP 200', async () =>
-    {
-        expect( response.statusCode ).to.equal( 200 );
+        response = await server.inject({ method: 'GET', url: '/api/users' });
     });
 
 });
@@ -33,16 +33,22 @@ describe( 'GET /tasks', () =>
 describe( 'POST /tasks', () =>
 {
 
-    beforeEach( async () =>
+    it( 'responds with HTTP 201', async () =>
     {
-        response = await server.inject({ method: 'POST', url: '/api/tasks' });
+        expect( response.statusCode ).to.equal( 201 );
     });
 
     let response;
 
-    it( 'responds with HTTP 201', async () =>
+    afterEach( async () =>
     {
-        expect( response.statusCode ).to.equal( 201 );
+        await server.stop();
+    });
+
+    beforeEach( async () =>
+    {
+        await server.start();
+        response = await server.inject({ method: 'POST', url: '/api/users' });
     });
 
 });
