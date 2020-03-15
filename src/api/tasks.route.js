@@ -6,7 +6,7 @@ function getTasks(request, hapi )
 createTask.method = 'POST';
 function createTask(request, hapi )
 {
-    return datum;
+    return hapi.response( datum ).code( 201 );
 }
 
 // userId, projectId

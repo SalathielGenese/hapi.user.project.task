@@ -6,7 +6,7 @@ function getUsers( request, hapi )
 createUser.method = 'POST';
 function createUser( request, hapi )
 {
-    return datum;
+    return hapi.response( datum ).code( 201 );
 }
 
 const datum = { email: 'john@doe.name', name: 'jon.doe', surname: 'John' };

@@ -6,7 +6,7 @@ function getProjects(request, hapi )
 createProject.method = 'POST';
 function createProject(request, hapi )
 {
-    return datum;
+    return hapi.response( datum ).code( 201 );
 }
 
 // userId
