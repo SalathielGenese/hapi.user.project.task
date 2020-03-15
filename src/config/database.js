@@ -1,26 +1,15 @@
-{
-  "development": {
-    "username": "root",
-    "password": null,
-    "database": "database_development",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
-  },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
-  },
-  "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
-  }
-}
+const {
+  POSTGRES_DIALECT_OPTIONS: options,
+  POSTGRES_DATABASE: database,
+  POSTGRES_USERNAME: username,
+  POSTGRES_PASSWORD: passport,
+  POSTGRES_DIALECT: dialect,
+  POSTGRES_HOST: host,
+  POSTGRES_POST: port,
+} = require( '../env' );
+
+
+module.exports = {
+  host, port, dialect, database, username, passport,
+  ...JSON.parse( options ),
+};
