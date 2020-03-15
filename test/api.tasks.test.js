@@ -25,7 +25,7 @@ describe( 'GET /tasks', () =>
     beforeEach( async () =>
     {
         await server.start();
-        response = await server.inject({ method: 'GET', url: '/api/users' });
+        response = await server.inject({ method: 'GET', url: '/api/tasks' });
     });
 
 });
@@ -48,7 +48,7 @@ describe( 'POST /tasks', () =>
     beforeEach( async () =>
     {
         await server.start();
-        response = await server.inject({ method: 'POST', url: '/api/users' });
+        response = await server.inject({ method: 'POST', url: '/api/tasks' });
     });
 
 });

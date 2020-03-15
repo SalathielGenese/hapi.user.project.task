@@ -25,7 +25,7 @@ describe( 'GET /projects', () =>
     beforeEach( async () =>
     {
         await server.start();
-        response = await server.inject({ method: 'GET', url: '/api/users' });
+        response = await server.inject({ method: 'GET', url: '/api/projects' });
     });
 
 });
@@ -48,7 +48,7 @@ describe( 'POST /projects', () =>
     beforeEach( async () =>
     {
         await server.start();
-        response = await server.inject({ method: 'POST', url: '/api/users' });
+        response = await server.inject({ method: 'POST', url: '/api/projects' });
     });
 
 });
