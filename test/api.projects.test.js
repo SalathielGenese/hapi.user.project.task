@@ -5,13 +5,19 @@ const Lab = require('@hapi/lab');
 
 
 const lab = Lab.script();
-const { beforeEach, describe, it } = lab;
+const { beforeEach, afterEach, describe, it } = lab;
 
 describe( 'GET /projects', () =>
 {
 
+    afterEach( async () =>
+    {
+        await server.stop();
+    });
+
     beforeEach( async () =>
     {
+        await server.start();
         response = await server.inject({ method: 'GET', url: '/api/projects' });
     });
 
@@ -27,8 +33,14 @@ describe( 'GET /projects', () =>
 describe( 'POST /projects', () =>
 {
 
+    afterEach( async () =>
+    {
+        await server.stop();
+    });
+
     beforeEach( async () =>
     {
+        await server.start();
         response = await server.inject({ method: 'POST', url: '/api/projects' });
     });
 
