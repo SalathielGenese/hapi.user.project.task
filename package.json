@@ -23,6 +23,7 @@
     "@hapi/code": "^8.0.1",
     "@hapi/lab": "^22.0.4",
     "nodemon": "^2.0.2",
+    "sequelize-cli": "^5.5.1",
     "yarpm": "^0.2.1"
   },
   "dependencies": {
