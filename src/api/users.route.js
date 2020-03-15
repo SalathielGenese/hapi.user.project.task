@@ -1,13 +1,15 @@
 function getUsers( request, hapi )
 {
-    return [{ email: 'john@doe.name', name: 'jon.doe', surname: 'John' }];
+    return [ datum ];
 }
 
 createUser.method = 'POST';
 function createUser( request, hapi )
 {
-    return { email: 'john@doe.name', name: 'jon.doe', surname: 'John' };
+    return datum;
 }
+
+const datum = { email: 'john@doe.name', name: 'jon.doe', surname: 'John' };
 
 
 
