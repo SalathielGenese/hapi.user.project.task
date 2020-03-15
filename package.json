@@ -5,6 +5,8 @@
   "author": "Salathiel Genese <salathielgenese@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "sequelize-cli": "env-cmd --silent sequelize-cli",
+    "sequelize": "env-cmd --silent sequelize",
     "test": "env-cmd --silent lab --coverage",
     "start": "env-cmd --silent node .",
     "dev": "nodemon"
