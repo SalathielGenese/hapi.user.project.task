@@ -4,23 +4,30 @@ module.exports = {
     return queryInterface.createTable('Projects', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
+        autoIncrement: true,
         type: Sequelize.INTEGER
       },
       name: {
+        unique: true,
+        allowNull: false,
         type: Sequelize.STRING
       },
       body: {
+        defaultValue: "",
         type: Sequelize.TEXT
       },
       status: {
-        type: Sequelize.ENUM
+        allowNull: false,
+        type: Sequelize.ENUM,
+        values: [ 'ACTIVE', 'INACTIVE' ],
       },
       declined: {
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       complete: {
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       createdAt: {
