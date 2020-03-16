@@ -12,23 +12,25 @@ const debug = require( 'debug' );
  */
 function getLogger( scope )
 {
-    return function ( ...parameters )
-    {
-        const [ , , calleeLineTarget ] = new Error().stack.split( LINE_END_REGEX );
-        const [ goto ] = calleeLineTarget.match( GOTO_REGEX );
-        const [ , target ] = goto.match( CALLEE_REGEX );
+    const [ , , calleeStackTrace ] = new Error().stack.match( STACK_TRACE_REGEX );
+    const callee = calleeStackTrace.replace( LOGGER_PREFIX_REGEX, '$2' );
 
-        debug( `${ APP_NAME }:${ target }:${ scope }` )( ...parameters );
-    };
+    return ( ...parameters ) => debug( `${ APP_NAME }:${ callee }:${ scope }` )( ...parameters );
 }
 
-const LINE_END_REGEX = /\r?\n/;
-const GOTO_REGEX = /(?:[A-Z]:)?(?:[\\/]|internal)[^\b\f\n\r\v]+\.js:\d+:\d+/g;
-const CALLEE_REGEX = new RegExp( `(?:${ APP_ROOT.replace( /([\\/\[](){}*:+-]|\\.)/g, '\\$1') }[\\/])?\(.*\)\.js:\\d+:\\d+` );
+const APP_ROOT_REGEX = APP_ROOT.replace( /([\\/\[](){}*:+-]|\\.)/g, '\\$1' );
+const LOGGER_PREFIX_REGEX = new RegExp( `(${ APP_ROOT_REGEX }[\\/])(.*)(\\.js(:\\d+){2})` )
+const STACK_TRACE_REGEX = new RegExp( `(${ APP_ROOT_REGEX }|internal).*\\.js(:\\d+){2}`, 'gm' );
 
 
 
 module.exports = {
-    debug: getLogger( 'debug' ),
-    error: getLogger( 'error' ),
+    get debug()
+    {
+        return getLogger( 'debug' );
+    },
+    get error()
+    {
+        return getLogger( 'error' );
+    },
 };
