@@ -14,7 +14,7 @@ services:
     - postgres:5432
     - --
     - yarn
-    - start
+    - dev
     depends_on:
     - postgres
     volumes:
