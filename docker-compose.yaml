@@ -5,6 +5,22 @@ services:
     build:
       context: .
       target: development
+    environment:
+    - POSTGRES_HOST=postgres
+    entrypoint:
+    - ./wait-for
+    - postgres:5432
+    - --
+    - yarn
+    - start
+    depends_on:
+    - postgres
     volumes:
     - /opt/app/node_modules
     - .:/opt/app
+  postgres:
+    image: postgres:alpine
+    environment:
+    - POSTGRES_USER=${POSTGRES_USERNAME:-root}
+    - POSTGRES_DB=${POSTGRES_DATABASE:-database}
+    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-null}
