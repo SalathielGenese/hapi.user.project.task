@@ -9,7 +9,7 @@
     "sequelize": "env-cmd --silent sequelize",
     "test": "env-cmd --silent lab --coverage",
     "start": "env-cmd --silent node .",
-    "dev": "nodemon"
+    "dev": "nodemon --exec 'yarpm test'"
   },
   "nodemonConfig": {
     "ignore": [
@@ -18,7 +18,6 @@
       "vscode",
       "node_modules"
     ],
-    "exec": "yarpm test",
     "ext": "js,env,json"
   },
   "devDependencies": {
