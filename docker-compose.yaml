@@ -5,6 +5,8 @@ services:
     build:
       context: .
       target: development
+    env_file:
+    - .env
     environment:
     - POSTGRES_HOST=postgres
     entrypoint:
