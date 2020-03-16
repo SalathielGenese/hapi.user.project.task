@@ -14,12 +14,13 @@ function getLogger( scope )
 {
     const [ , , calleeStackTrace ] = new Error().stack.match( STACK_TRACE_REGEX );
     const callee = calleeStackTrace.replace( LOGGER_PREFIX_REGEX, '$2' );
+    const trace = calleeStackTrace.replace( LOGGER_PREFIX_REGEX, '$3' );
 
-    return ( ...parameters ) => debug( `${ APP_NAME }:${ callee }:${ scope }` )( ...parameters );
+    return ( ...parameters ) => debug( `${ APP_NAME }:${ callee }:${ scope }` )( `{${ trace }}`, ...parameters );
 }
 
 const APP_ROOT_REGEX = APP_ROOT.replace( /([\\/\[](){}*:+-]|\\.)/g, '\\$1' );
-const LOGGER_PREFIX_REGEX = new RegExp( `(${ APP_ROOT_REGEX }[\\/])(.*)(\\.js(:\\d+){2})` )
+const LOGGER_PREFIX_REGEX = new RegExp( `(${ APP_ROOT_REGEX }[\\/])(.*)\\.js:(\\d+:\\d+)` )
 const STACK_TRACE_REGEX = new RegExp( `(${ APP_ROOT_REGEX }|internal).*\\.js(:\\d+){2}`, 'gm' );
 
 
