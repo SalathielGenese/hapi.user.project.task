@@ -15,8 +15,9 @@ function getLogger( scope )
     const [ , , calleeStackTrace ] = new Error().stack.match( STACK_TRACE_REGEX );
     const callee = calleeStackTrace.replace( LOGGER_PREFIX_REGEX, '$2' );
     const trace = calleeStackTrace.replace( LOGGER_PREFIX_REGEX, '$3' );
+    const logger = debug( `${ APP_NAME }:${ callee }:${ scope }` );
 
-    return ( ...parameters ) => debug( `${ APP_NAME }:${ callee }:${ scope }` )( `{${ trace }}`, ...parameters );
+    return ( ...parameters ) => logger( `{${ trace }}`, ...parameters );
 }
 
 const APP_ROOT_REGEX = APP_ROOT.replace( /([\\/\[](){}*:+-]|\\.)/g, '\\$1' );
