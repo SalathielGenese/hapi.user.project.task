@@ -1,6 +1,7 @@
-const { sequelize } = require( '../src/config/database/models' );
+const { sequelize, Projects, Tasks, Users } = require( '../src/config/database/models' );
 const { server } = require( '../src/server' );
 const { expect } = require('@hapi/code');
+const { v4: uuid } = require( 'uuid' );
 const Lab = require('@hapi/lab');
 
 
@@ -86,6 +87,28 @@ describe( 'GET /tasks', () =>
     {
         await server.start();
         await sequelize.sync({ force: true });
+
+        const assigner = await Users.create({
+            name: uuid(),
+            surname: uuid(),
+            email: 'john@doe.name',
+        }).then( user => user.get({ plain: true }) );
+        const project = await Projects.create({
+            assigner,
+            name: uuid(),
+            declined: true,
+            complete: false,
+            status: 'ACTIVE',
+        }).then( user => user.get({ plain: true }) );
+
+        await Tasks.create({
+            project,
+            name: uuid(),
+            declined: true,
+            complete: false,
+            status: 'ACTIVE',
+            description: uuid(),
+        });
         response = await server.inject({ method: 'GET', url: '/api/tasks' });
     });
 
