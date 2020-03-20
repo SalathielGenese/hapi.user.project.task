@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       unique: true,
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate: { len: [ 1 ] },
     },
     description: {
       type: DataTypes.STRING
@@ -12,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     score: {
       defaultValue: 1,
       allowNull: false,
-      validate: { min: 1 },
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      validate: { len: [ 1 ] },
     },
     status: {
       allowNull: false,

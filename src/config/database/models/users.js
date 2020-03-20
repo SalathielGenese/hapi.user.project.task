@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: {
       allowNull: false,
-      validate: { min: 1 },
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate: { len: [ 1 ] },
     },
     surname: {
       allowNull: false,

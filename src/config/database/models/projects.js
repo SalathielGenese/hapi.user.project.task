@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       unique: true,
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      validate: { len: [ 1 ] },
     },
     body: {
       defaultValue: "",
