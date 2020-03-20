@@ -1,3 +1,4 @@
+const { sequelize } = require( '../src/config/database/models' );
 const { server } = require( '../src/server' );
 const { expect } = require('@hapi/code');
 const Lab = require('@hapi/lab');
@@ -70,6 +71,7 @@ describe( 'GET /projects', () =>
     beforeEach( async () =>
     {
         await server.start();
+        await sequelize.sync({ force: true });
         response = await server.inject({ method: 'GET', url: '/api/projects' });
     });
 
@@ -133,6 +135,7 @@ describe( 'POST /projects', () =>
     beforeEach( async () =>
     {
         await server.start();
+        await sequelize.sync({ force: true });
         response = await server.inject({ method: 'POST', url: '/api/projects' });
     });
 
