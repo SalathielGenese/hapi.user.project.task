@@ -18,7 +18,7 @@ module.exports = {
       },
       score: {
         defaultValue: 1,
-        validate: { min: 1 },
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       status: {
@@ -34,14 +34,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN
       },
-      createdAt: {
+      projectId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        type: Sequelize.DATE
+        references: {
+          model: 'Projects',
+          key: 'id',
+        },
       },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
     });
   },
   down: (queryInterface, Sequelize) => {

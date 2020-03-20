@@ -16,9 +16,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.STRING,
     },
-  }, {});
-  Users.associate = function(models) {
-    // associations can be defined here
+  }, {
+    timestamps: false,
+  });
+  Users.associate = function ({ ProjectsUsersAssignees, TasksUsers, Tasks, Projects }) {
+    Users.hasMany( Projects, { as: 'assignerProjects', foreignKey: 'assignerId' });
+    Users.belongsToMany( Tasks, { through: TasksUsers, foreignKey: 'userId', as: 'tasks' });
+    Users.belongsToMany( Projects, { through: ProjectsUsersAssignees, foreignKey: 'userId', as: 'assignedProjects' });
   };
   return Users;
 };

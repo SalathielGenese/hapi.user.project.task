@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     score: {
       defaultValue: 1,
+      allowNull: false,
       validate: { min: 1 },
       type: DataTypes.INTEGER
     },
@@ -27,9 +28,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.BOOLEAN
     },
-  }, {});
-  Tasks.associate = function(models) {
-    // associations can be defined here
+  }, {
+    timestamps: false,
+  });
+  Tasks.associate = function ({ TasksUsers, Projects, Users }) {
+    Tasks.belongsTo( Projects, { as: 'project', foreignKey: 'projectId' });
+    Tasks.belongsToMany( Users, { through: TasksUsers, foreignKey: 'taskId', as: 'assignees' });
   };
   return Tasks;
 };

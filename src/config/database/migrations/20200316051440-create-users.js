@@ -6,31 +6,21 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       email: {
         unique: true,
         allowNull: false,
         type: Sequelize.STRING,
-        validate: { isEmail: true },
       },
       name: {
         allowNull: false,
-        validate: { min: 1 },
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       surname: {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
     });
   },
   down: (queryInterface, Sequelize) => {

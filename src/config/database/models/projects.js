@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     body: {
       defaultValue: "",
+      allowNull: false,
       type: DataTypes.TEXT
     },
     status: {
@@ -23,9 +24,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.BOOLEAN
     },
-  }, {});
-  Projects.associate = function(models) {
-    // associations can be defined here
+  }, {
+    timestamps: false,
+  });
+  Projects.associate = function ({ ProjectsUsersAssignees, Tasks, Users }) {
+    Projects.hasMany( Tasks, { as: 'tasks', foreignKey: 'projectId' });
+    Projects.belongsTo( Users, { as: 'assigner', foreignKey: 'assignerId' } );
+    Projects.belongsToMany( Users, { through: ProjectsUsersAssignees, foreignKey: 'projectId', as: 'assignees' } );
   };
   return Projects;
 };

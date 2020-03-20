@@ -14,6 +14,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       body: {
+        allowNull: false,
         defaultValue: "",
         type: Sequelize.TEXT
       },
@@ -30,14 +31,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN
       },
-      createdAt: {
+      assignerId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        type: Sequelize.DATE
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
       },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
     });
   },
   down: (queryInterface, Sequelize) => {
