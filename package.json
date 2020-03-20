@@ -25,6 +25,7 @@
     "@hapi/lab": "^22.0.4",
     "nodemon": "^2.0.2",
     "sequelize-cli": "^5.5.1",
+    "uuid": "^7.0.2",
     "yarpm": "^0.2.1"
   },
   "dependencies": {
