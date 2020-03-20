@@ -1,6 +1,10 @@
+const { Projects } = require( '../config/database/models' );
+
+
+
 function getProjects(request, hapi )
 {
-    return [ datum ];
+    return Projects.findAll();
 }
 
 createProject.method = 'POST';

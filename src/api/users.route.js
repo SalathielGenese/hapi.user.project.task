@@ -1,6 +1,10 @@
+const { Users } = require( '../config/database/models' );
+
+
+
 function getUsers( request, hapi )
 {
-    return [ datum ];
+    return Users.findAll();
 }
 
 createUser.method = 'POST';

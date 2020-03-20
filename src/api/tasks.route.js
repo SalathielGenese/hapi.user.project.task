@@ -1,6 +1,10 @@
+const { Tasks } = require( '../config/database/models' );
+
+
+
 function getTasks(request, hapi )
 {
-    return [ datum ];
+    return Tasks.findAll();
 }
 
 createTask.method = 'POST';
