@@ -1,10 +1,14 @@
+const logger = require( '../../../logger' );
 const config = require( '../../database' );
 const Sequelize = require( 'sequelize' );
 const find = require( 'find' );
 
 
 
-const sequelize = new Sequelize( config );
+const sequelize = new Sequelize({
+    logging: logger.debug,
+    ...config,
+});
 const db = {};
 
 find.fileSync( /\.js$/, __dirname )
