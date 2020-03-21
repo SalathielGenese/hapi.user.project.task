@@ -7,9 +7,9 @@
   "scripts": {
     "sequelize-cli": "env-cmd --silent sequelize-cli",
     "sequelize": "env-cmd --silent sequelize",
-    "test": "env-cmd --silent lab --coverage",
+    "dev": "nodemon --exec 'yarpm test'",
     "start": "env-cmd --silent node .",
-    "dev": "nodemon --exec 'yarpm test'"
+    "test": "env-cmd --silent lab"
   },
   "nodemonConfig": {
     "ignore": [
