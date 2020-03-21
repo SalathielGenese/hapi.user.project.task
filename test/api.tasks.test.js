@@ -1,87 +1,81 @@
 const { sequelize, Projects, Tasks, Users } = require( '../src/config/database/models' );
-const { server } = require( '../src/server' );
-const { expect } = require('@hapi/code');
-const { v4: uuid } = require( 'uuid' );
-const Lab = require('@hapi/lab');
+const { expect, server, uuid, lab } = require( '.' );
 
 
 
-const lab = Lab.script();
-const { beforeEach, afterEach, describe, it } = lab;
-
-describe( 'GET /tasks', () =>
+lab.describe( 'GET /tasks', () =>
 {
 
-    it( 'responds with HTTP 200', async ({ context: { response } }) =>
+    lab.it( 'responds with HTTP 200', async ({ context: { response } }) =>
     {
         expect( response.statusCode ).to.equal( 200 );
     });
 
-    it( 'responds with JSON body', async ({ context: { response } }) =>
+    lab.it( 'responds with JSON body', async ({ context: { response } }) =>
     {
         expect( () => JSON.parse( response.payload ) ).not.to.throw();
     });
 
-    it( 'responds with JSON body array', async ({ context: { response } }) =>
+    lab.it( 'responds with JSON body array', async ({ context: { response } }) =>
     {
         expect( JSON.parse( response.payload ) ).to.be.array();
     });
 
-    it( 'responds with JSON body matching $[*].{ name: string }', async ({ context: { response } }) =>
+    lab.it( 'responds with JSON body matching $[*].{ name: string }', async ({ context: { response } }) =>
     {
         const [ { name } ] = JSON.parse( response.payload );
 
         expect( name ).to.be.a.string();
     });
 
-    it( 'responds with JSON body matching $[*].{ description: string }', async ({ context: { response } }) =>
+    lab.it( 'responds with JSON body matching $[*].{ description: string }', async ({ context: { response } }) =>
     {
         const [ { description } ] = JSON.parse( response.payload );
 
         expect( description ).to.be.a.string();
     });
 
-    it( 'responds with JSON body matching $[*].{ score: number }', async ({ context: { response } }) =>
+    lab.it( 'responds with JSON body matching $[*].{ score: number }', async ({ context: { response } }) =>
     {
         const [ { score } ] = JSON.parse( response.payload );
 
         expect( score ).to.be.a.number();
     });
 
-    it( 'responds with JSON body matching $[*].{ score: number >= 1 }', async ({ context: { response } }) =>
+    lab.it( 'responds with JSON body matching $[*].{ score: number >= 1 }', async ({ context: { response } }) =>
     {
         const [ { score } ] = JSON.parse( response.payload );
 
         expect( score ).to.be.at.least( 1 );
     });
 
-    it( 'responds with JSON body matching $[*].{ status: "ACTIVE" | "INACTIVE" }', async ({ context: { response } }) =>
+    lab.it( 'responds with JSON body matching $[*].{ status: "ACTIVE" | "INACTIVE" }', async ({ context: { response } }) =>
     {
         const [ { status } ] = JSON.parse( response.payload );
 
         expect( status ).to.satisfies( Array.prototype.includes.bind( [ "ACTIVE", "INACTIVE" ] ) );
     });
 
-    it( 'responds with JSON body matching $[*].{ declined: boolean }', async ({ context: { response } }) =>
+    lab.it( 'responds with JSON body matching $[*].{ declined: boolean }', async ({ context: { response } }) =>
     {
         const [ { declined } ] = JSON.parse( response.payload );
 
         expect( declined ).to.be.a.boolean();
     });
 
-    it( 'responds with JSON body matching $[*].{ completed: boolean }', async ({ context: { response } }) =>
+    lab.it( 'responds with JSON body matching $[*].{ completed: boolean }', async ({ context: { response } }) =>
     {
         const [ { completed } ] = JSON.parse( response.payload );
 
         expect( completed ).to.be.a.boolean();
     });
 
-    afterEach( async () =>
+    lab.afterEach( async () =>
     {
         await server.stop();
     });
 
-    beforeEach( async ({ context }) =>
+    lab.beforeEach( async ({ context }) =>
     {
         await sequelize.sync({ force: true });
 
@@ -112,74 +106,74 @@ describe( 'GET /tasks', () =>
 
 });
 
-describe( 'POST /tasks', () =>
+lab.describe( 'POST /tasks', () =>
 {
 
-    it( 'responds with HTTP 201', async ({ context: { response } }) =>
+   lab.it( 'responds with HTTP 201', async ({ context: { response } }) =>
     {
         expect( response.statusCode ).to.equal( 201 );
     });
 
-    it( 'responds with JSON body', async ({ context: { response } }) =>
+   lab.it( 'responds with JSON body', async ({ context: { response } }) =>
     {
         expect( () => JSON.parse( response.payload ) ).not.to.throw();
     });
 
-    it( 'responds with JSON body matching $.{ name: string }', async ({ context: { response } }) =>
+   lab.it( 'responds with JSON body matching $.{ name: string }', async ({ context: { response } }) =>
     {
         const { name } = JSON.parse( response.payload );
 
         expect( name ).to.be.a.string();
     });
 
-    it( 'responds with JSON body matching $.{ description: string }', async ({ context: { response } }) =>
+   lab.it( 'responds with JSON body matching $.{ description: string }', async ({ context: { response } }) =>
     {
         const { description } = JSON.parse( response.payload );
 
         expect( description ).to.be.a.string();
     });
 
-    it( 'responds with JSON body matching $.{ score: number }', async ({ context: { response } }) =>
+   lab.it( 'responds with JSON body matching $.{ score: number }', async ({ context: { response } }) =>
     {
         const { score } = JSON.parse( response.payload );
 
         expect( score ).to.be.a.number();
     });
 
-    it( 'responds with JSON body matching $.{ score: number >= 1 }', async ({ context: { response } }) =>
+   lab.it( 'responds with JSON body matching $.{ score: number >= 1 }', async ({ context: { response } }) =>
     {
         const { score } = JSON.parse( response.payload );
 
         expect( score ).to.be.at.least( 1 );
     });
 
-    it( 'responds with JSON body matching $.{ status: "ACTIVE" | "INACTIVE" }', async ({ context: { response } }) =>
+   lab.it( 'responds with JSON body matching $.{ status: "ACTIVE" | "INACTIVE" }', async ({ context: { response } }) =>
     {
         const { status } = JSON.parse( response.payload );
 
         expect( status ).to.satisfies( Array.prototype.includes.bind( [ "ACTIVE", "INACTIVE" ] ) );
     });
 
-    it( 'responds with JSON body matching $.{ declined: boolean }', async ({ context: { response } }) =>
+   lab.it( 'responds with JSON body matching $.{ declined: boolean }', async ({ context: { response } }) =>
     {
         const { declined } = JSON.parse( response.payload );
 
         expect( declined ).to.be.a.boolean();
     });
 
-    it( 'responds with JSON body matching $.{ completed: boolean }', async ({ context: { response } }) =>
+   lab.it( 'responds with JSON body matching $.{ completed: boolean }', async ({ context: { response } }) =>
     {
         const { completed } = JSON.parse( response.payload );
 
         expect( completed ).to.be.a.boolean();
     });
 
-    afterEach( async () =>
+    lab.afterEach( async () =>
     {
         await server.stop();
     });
 
-    beforeEach( async ({ context }) =>
+    lab.beforeEach( async ({ context }) =>
     {
         await sequelize.sync({ force: true });
 
