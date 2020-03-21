@@ -25,7 +25,9 @@ $ docker-compose up --build
 
 ### What's not Included
 
++ Health check
 + Authentication
++ Graceful shutdown
 + API input validation
 + OpenAPI documentation
 + API filtering or GraphQL
