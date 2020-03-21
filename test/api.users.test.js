@@ -21,6 +21,20 @@ lab.describe( 'GET /users', () =>
         expect( JSON.parse( response.payload ) ).to.be.array();
     });
 
+    lab.it( 'responds with JSON body matching $[*].{ id: number }', async ({ context: { response } }) =>
+    {
+        const [ { id } ] = JSON.parse( response.payload );
+
+        expect( id ).to.be.a.number();
+    });
+
+    lab.it( 'responds with JSON body matching $[*].{ id: database value }', async ({ context: { response, users: [ user ] } }) =>
+    {
+        const [ { id } ] = JSON.parse( response.payload );
+
+        expect( id ).to.equals( user.id );
+    });
+
     lab.it( 'responds with JSON body matching $[*].{ surname: string }', async ({ context: { response } }) =>
     {
         const [ { surname } ] = JSON.parse( response.payload );
@@ -85,17 +99,24 @@ lab.describe( 'GET /users', () =>
 lab.describe( 'POST /users', () =>
 {
 
-   lab.it( 'responds with HTTP 201', async ({ context: { response } }) =>
+    lab.it( 'responds with HTTP 201', async ({ context: { response } }) =>
     {
         expect( response.statusCode ).to.equal( 201 );
     });
 
-   lab.it( 'responds with JSON body', async ({ context: { response } }) =>
+    lab.it( 'responds with JSON body', async ({ context: { response } }) =>
     {
         expect( () => JSON.parse( response.payload ) ).not.to.throw();
     });
 
-   lab.it( 'responds with JSON body matching $.{ surname: string }', async ({ context: { response } }) =>
+    lab.it( 'responds with JSON body matching $.{ id: number }', async ({ context: { response } }) =>
+    {
+        const { id } = JSON.parse( response.payload );
+
+        expect( id ).to.be.a.number();
+    });
+
+    lab.it( 'responds with JSON body matching $.{ surname: string }', async ({ context: { response } }) =>
     {
         const { surname } = JSON.parse( response.payload );
 
@@ -109,7 +130,7 @@ lab.describe( 'POST /users', () =>
         expect( surname ).to.equals( user.surname );
     });
 
-   lab.it( 'responds with JSON body matching $.{ email: string }', async ({ context: { response } }) =>
+    lab.it( 'responds with JSON body matching $.{ email: string }', async ({ context: { response } }) =>
     {
         const { email } = JSON.parse( response.payload );
 
@@ -123,7 +144,7 @@ lab.describe( 'POST /users', () =>
         expect( email ).to.equals( user.email );
     });
 
-   lab.it( 'responds with JSON body matching $.{ name: string }', async ({ context: { response } }) =>
+    lab.it( 'responds with JSON body matching $.{ name: string }', async ({ context: { response } }) =>
     {
         const { name } = JSON.parse( response.payload );
 

@@ -21,6 +21,34 @@ lab.describe( 'GET /tasks', () =>
         expect( JSON.parse( response.payload ) ).to.be.array();
     });
 
+    lab.it( 'responds with JSON body matching $[*].{ id: number }', async ({ context: { response } }) =>
+    {
+        const [ { id } ] = JSON.parse( response.payload );
+
+        expect( id ).to.be.a.number();
+    });
+
+    lab.it( 'responds with JSON body matching $[*].{ id: database value }', async ({ context: { response, tasks: [ task ] } }) =>
+    {
+        const [ { id } ] = JSON.parse( response.payload );
+
+        expect( id ).to.equals( task.id );
+    });
+
+    lab.it( 'responds with JSON body matching $[*].{ projectId: number }', async ({ context: { response } }) =>
+    {
+        const [ { projectId } ] = JSON.parse( response.payload );
+
+        expect( projectId ).to.be.a.number();
+    });
+
+    lab.it( 'responds with JSON body matching $[*].{ projectId: database value }', async ({ context: { response, tasks: [ task ] } }) =>
+    {
+        const [ { projectId } ] = JSON.parse( response.payload );
+
+        expect( projectId ).to.equals( task.projectId );
+    });
+
     lab.it( 'responds with JSON body matching $[*].{ name: string }', async ({ context: { response } }) =>
     {
         const [ { name } ] = JSON.parse( response.payload );
@@ -159,6 +187,27 @@ lab.describe( 'POST /tasks', () =>
     lab.it( 'responds with JSON body', async ({ context: { response } }) =>
     {
         expect( () => JSON.parse( response.payload ) ).not.to.throw();
+    });
+
+    lab.it( 'responds with JSON body matching $.{ id: number }', async ({ context: { response } }) =>
+    {
+        const { id } = JSON.parse( response.payload );
+
+        expect( id ).to.be.a.number();
+    });
+
+    lab.it( 'responds with JSON body matching $.{ projectId: number }', async ({ context: { response } }) =>
+    {
+        const { projectId } = JSON.parse( response.payload );
+
+        expect( projectId ).to.be.a.number();
+    });
+
+    lab.it( 'responds with JSON body matching $.{ projectId: payload value }', async ({ context: { response, task } }) =>
+    {
+        const { projectId } = JSON.parse( response.payload );
+
+        expect( projectId ).to.equals( task.projectId );
     });
 
     lab.it( 'responds with JSON body matching $.{ name: string }', async ({ context: { response } }) =>
