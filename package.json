@@ -1,5 +1,5 @@
 {
-  "name": "upwork.user.project.task",
+  "name": "hapi.user.project.task",
   "version": "1.0.0",
   "main": "src/index.js",
   "author": "Salathiel Genese <salathielgenese@gmail.com>",
