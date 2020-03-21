@@ -55,11 +55,11 @@ describe( 'GET /projects', () =>
         expect( declined ).to.be.a.boolean();
     });
 
-    it( 'responds with JSON body matching $[*].{ complete: boolean }', async () =>
+    it( 'responds with JSON body matching $[*].{ completed: boolean }', async () =>
     {
-        const [ { complete } ] = JSON.parse( response.payload );
+        const [ { completed } ] = JSON.parse( response.payload );
 
-        expect( complete ).to.be.a.boolean();
+        expect( completed ).to.be.a.boolean();
     });
 
     let response;
@@ -75,17 +75,17 @@ describe( 'GET /projects', () =>
         await sequelize.sync({ force: true });
 
         const assigner = await Users.create({
-            name: uuid(),
-            surname: uuid(),
             email: 'john@doe.name',
+            surname: uuid(),
+            name: uuid(),
         }).then( user => user.get({ plain: true }) );
 
         await Projects.create({
-            assigner,
-            name: uuid(),
-            declined: true,
-            complete: false,
             status: 'ACTIVE',
+            completed: false,
+            declined: true,
+            name: uuid(),
+            assigner,
         });
         response = await server.inject({ method: 'GET', url: '/api/projects' });
     });
@@ -133,11 +133,11 @@ describe( 'POST /projects', () =>
         expect( declined ).to.be.a.boolean();
     });
 
-    it( 'responds with JSON body matching $.{ complete: boolean }', async () =>
+    it( 'responds with JSON body matching $.{ completed: boolean }', async () =>
     {
-        const { complete } = JSON.parse( response.payload );
+        const { completed } = JSON.parse( response.payload );
 
-        expect( complete ).to.be.a.boolean();
+        expect( completed ).to.be.a.boolean();
     });
 
     let response;
@@ -151,7 +151,24 @@ describe( 'POST /projects', () =>
     {
         await server.start();
         await sequelize.sync({ force: true });
-        response = await server.inject({ method: 'POST', url: '/api/projects' });
+
+        const { id: assignerId } = await Users.create({
+            email: 'john@doe.name',
+            surname: uuid(),
+            name: uuid(),
+        }).then( user => user.get({ plain: true }) );
+        response = await server.inject({
+            payload: {
+                status: 'INACTIVE',
+                completed: false,
+                declined: false,
+                name: uuid(),
+                body: uuid(),
+                assignerId,
+            },
+            url: '/api/projects',
+            method: 'POST',
+        });
     });
 
 });

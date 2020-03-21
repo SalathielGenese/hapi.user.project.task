@@ -1,20 +1,41 @@
 const { Tasks } = require( '../config/database/models' );
+const { logError, toPlain } = require( '.' );
+const logger = require( '../logger' );
 
 
 
 function getTasks(request, hapi )
 {
-    return Tasks.findAll();
+    return Tasks.findAll()
+        .catch( logError( logger.debug ) );
 }
 
 createTask.method = 'POST';
 function createTask(request, hapi )
 {
-    return hapi.response( datum ).code( 201 );
-}
+    const {
+        status = 'ACTIVE',
+        completed = false,
+        declined = false,
+        description,
+        projectId,
+        score = 1,
+        name,
+    } = request.payload;
 
-// userId, projectId
-const datum = { name: 'Air Travel', description: 'Take the airplane to Johannesburg', score: 1, status: 'ACTIVE', declined: false, complete: false };
+    return Tasks.create({
+        description,
+        projectId,
+        completed,
+        declined,
+        status,
+        score,
+        name,
+    })
+    .then( toPlain )
+    .then( content => hapi.response( content ).code( 201 ) )
+    .catch( logError( logger.debug ) );
+}
 
 
 

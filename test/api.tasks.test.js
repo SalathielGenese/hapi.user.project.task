@@ -69,11 +69,11 @@ describe( 'GET /tasks', () =>
         expect( declined ).to.be.a.boolean();
     });
 
-    it( 'responds with JSON body matching $[*].{ complete: boolean }', async () =>
+    it( 'responds with JSON body matching $[*].{ completed: boolean }', async () =>
     {
-        const [ { complete } ] = JSON.parse( response.payload );
+        const [ { completed } ] = JSON.parse( response.payload );
 
-        expect( complete ).to.be.a.boolean();
+        expect( completed ).to.be.a.boolean();
     });
 
     let response;
@@ -89,23 +89,23 @@ describe( 'GET /tasks', () =>
         await sequelize.sync({ force: true });
 
         const assigner = await Users.create({
-            name: uuid(),
-            surname: uuid(),
             email: 'john@doe.name',
+            surname: uuid(),
+            name: uuid(),
         }).then( user => user.get({ plain: true }) );
         const project = await Projects.create({
-            assigner,
-            name: uuid(),
-            declined: true,
-            complete: false,
             status: 'ACTIVE',
+            completed: false,
+            declined: true,
+            name: uuid(),
+            assigner,
         }).then( user => user.get({ plain: true }) );
 
         await Tasks.create({
             project,
             name: uuid(),
             declined: true,
-            complete: false,
+            completed: false,
             status: 'ACTIVE',
             description: uuid(),
         });
@@ -169,11 +169,11 @@ describe( 'POST /tasks', () =>
         expect( declined ).to.be.a.boolean();
     });
 
-    it( 'responds with JSON body matching $.{ complete: boolean }', async () =>
+    it( 'responds with JSON body matching $.{ completed: boolean }', async () =>
     {
-        const { complete } = JSON.parse( response.payload );
+        const { completed } = JSON.parse( response.payload );
 
-        expect( complete ).to.be.a.boolean();
+        expect( completed ).to.be.a.boolean();
     });
 
     let response;
@@ -187,7 +187,33 @@ describe( 'POST /tasks', () =>
     {
         await server.start();
         await sequelize.sync({ force: true });
-        response = await server.inject({ method: 'POST', url: '/api/tasks' });
+
+        const assigner = await Users.create({
+            email: 'john@doe.name',
+            surname: uuid(),
+            name: uuid(),
+        }).then( user => user.get({ plain: true }) );
+        const { id: projectId } = await Projects.create({
+            status: 'ACTIVE',
+            completed: false,
+            declined: true,
+            name: uuid(),
+            assigner,
+        }).then( user => user.get({ plain: true }) );
+
+        response = await server.inject({
+            payload: {
+                description: uuid(),
+                status: 'ACTIVE',
+                completed: false,
+                declined: true,
+                name: uuid(),
+                projectId,
+                score: 2,
+            },
+            url: '/api/tasks',
+            method: 'POST'
+        });
     });
 
 });

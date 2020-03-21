@@ -60,9 +60,9 @@ describe( 'GET /users', () =>
         await server.start();
         await sequelize.sync({ force: true });
         await Users.create({
-            name: uuid(),
-            surname: uuid(),
             email: 'john@doe.name',
+            surname: uuid(),
+            name: uuid(),
         });
         response = await server.inject({ method: 'GET', url: '/api/users' });
     });
@@ -114,7 +114,15 @@ describe( 'POST /users', () =>
     {
         await server.start();
         await sequelize.sync({ force: true });
-        response = await server.inject({ method: 'POST', url: '/api/users' });
+        response = await server.inject({
+            payload: {
+                email: 'john@doe.name',
+                surname: uuid(),
+                name: uuid(),
+            },
+            url: '/api/users',
+            method: 'POST',
+        });
     });
 
 });

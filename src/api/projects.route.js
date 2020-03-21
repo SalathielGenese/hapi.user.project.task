@@ -1,20 +1,39 @@
 const { Projects } = require( '../config/database/models' );
+const { logError, toPlain } = require( '.' );
+const logger = require( '../logger' );
 
 
 
-function getProjects(request, hapi )
+function getProjects( request, hapi )
 {
-    return Projects.findAll();
+    return Projects.findAll()
+        .catch( logError( logger.debug ) );;
 }
 
 createProject.method = 'POST';
 function createProject(request, hapi )
 {
-    return hapi.response( datum ).code( 201 );
-}
+    const {
+        name,
+        body = '',
+        assignerId,
+        declined = false,
+        completed = false,
+        status = 'ACTIVE',
+    } = request.payload;
 
-// userId
-const datum = { name: 'COVID-19', body: 'Start in China and spread in Europe', status: 'ACTIVE', declined: false, complete: false };
+    return Projects.create({
+        assignerId,
+        completed,
+        declined,
+        status,
+        body,
+        name,
+    })
+    .then( toPlain )
+    .then( content => hapi.response( content ).code( 201 ) )
+    .catch( logError( logger.debug ) );
+}
 
 
 

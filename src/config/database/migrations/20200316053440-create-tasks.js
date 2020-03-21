@@ -30,7 +30,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN
       },
-      complete: {
+      completed: {
         allowNull: false,
         type: Sequelize.BOOLEAN
       },
