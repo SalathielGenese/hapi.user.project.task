@@ -5,10 +5,11 @@
   "author": "Salathiel Genese <salathielgenese@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "start": "yarpm sequelize db:migrate && yarpm env node .",
     "sequelize-cli": "yarpm env sequelize-cli",
+    "migrate": "yarpm sequelize db:migrate",
     "dev": "nodemon --exec 'yarpm test'",
     "sequelize": "yarpm env sequelize",
-    "start": "yarpm env node .",
     "env": "env-cmd --silent",
     "test": "yarpm env lab"
   },
