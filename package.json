@@ -5,11 +5,12 @@
   "author": "Salathiel Genese <salathielgenese@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "sequelize-cli": "env-cmd --silent sequelize-cli",
-    "sequelize": "env-cmd --silent sequelize",
+    "sequelize-cli": "yarpm env sequelize-cli",
     "dev": "nodemon --exec 'yarpm test'",
-    "start": "env-cmd --silent node .",
-    "test": "env-cmd --silent lab"
+    "sequelize": "yarpm env sequelize",
+    "start": "yarpm env node .",
+    "env": "env-cmd --silent",
+    "test": "yarpm env lab"
   },
   "nodemonConfig": {
     "ignore": [
