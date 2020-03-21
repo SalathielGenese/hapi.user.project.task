@@ -12,59 +12,57 @@ const { beforeEach, afterEach, describe, it } = lab;
 describe( 'GET /users', () =>
 {
 
-    it( 'responds with HTTP 200', async () =>
+    it( 'responds with HTTP 200', async ({ context: { response } }) =>
     {
         expect( response.statusCode ).to.equal( 200 );
     });
 
-    it( 'responds with JSON body', async () =>
+    it( 'responds with JSON body', async ({ context: { response } }) =>
     {
         expect( () => JSON.parse( response.payload ) ).not.to.throw();
     });
 
-    it( 'responds with JSON body array', async () =>
+    it( 'responds with JSON body array', async ({ context: { response } }) =>
     {
         expect( JSON.parse( response.payload ) ).to.be.array();
     });
 
-    it( 'responds with JSON body matching $[*].{ surname: string }', async () =>
+    it( 'responds with JSON body matching $[*].{ surname: string }', async ({ context: { response } }) =>
     {
         const [ { surname } ] = JSON.parse( response.payload );
 
         expect( surname ).to.be.a.string();
     });
 
-    it( 'responds with JSON body matching $[*].{ email: string }', async () =>
+    it( 'responds with JSON body matching $[*].{ email: string }', async ({ context: { response } }) =>
     {
         const [ { email } ] = JSON.parse( response.payload );
 
         expect( email ).to.be.a.string();
     });
 
-    it( 'responds with JSON body matching $[*].{ name: string }', async () =>
+    it( 'responds with JSON body matching $[*].{ name: string }', async ({ context: { response } }) =>
     {
         const [ { name } ] = JSON.parse( response.payload );
 
         expect( name ).to.be.a.string();
     });
 
-    let response;
-
     afterEach( async () =>
     {
         await server.stop();
     });
 
-    beforeEach( async () =>
+    beforeEach( async ({ context }) =>
     {
-        await server.start();
         await sequelize.sync({ force: true });
         await Users.create({
             email: 'john@doe.name',
             surname: uuid(),
             name: uuid(),
         });
-        response = await server.inject({ method: 'GET', url: '/api/users' });
+        await server.start();
+        context.response = await server.inject({ method: 'GET', url: '/api/users' });
     });
 
 });
@@ -72,49 +70,47 @@ describe( 'GET /users', () =>
 describe( 'POST /users', () =>
 {
 
-    it( 'responds with HTTP 201', async () =>
+    it( 'responds with HTTP 201', async ({ context: { response } }) =>
     {
         expect( response.statusCode ).to.equal( 201 );
     });
 
-    it( 'responds with JSON body', async () =>
+    it( 'responds with JSON body', async ({ context: { response } }) =>
     {
         expect( () => JSON.parse( response.payload ) ).not.to.throw();
     });
 
-    it( 'responds with JSON body matching $.{ surname: string }', async () =>
+    it( 'responds with JSON body matching $.{ surname: string }', async ({ context: { response } }) =>
     {
         const { surname } = JSON.parse( response.payload );
 
         expect( surname ).to.be.a.string();
     });
 
-    it( 'responds with JSON body matching $.{ email: string }', async () =>
+    it( 'responds with JSON body matching $.{ email: string }', async ({ context: { response } }) =>
     {
         const { email } = JSON.parse( response.payload );
 
         expect( email ).to.be.a.string();
     });
 
-    it( 'responds with JSON body matching $.{ name: string }', async () =>
+    it( 'responds with JSON body matching $.{ name: string }', async ({ context: { response } }) =>
     {
         const { name } = JSON.parse( response.payload );
 
         expect( name ).to.be.a.string();
     });
 
-    let response;
-
     afterEach( async () =>
     {
         await server.stop();
     });
 
-    beforeEach( async () =>
+    beforeEach( async ({ context }) =>
     {
-        await server.start();
         await sequelize.sync({ force: true });
-        response = await server.inject({
+        await server.start();
+        context.response = await server.inject({
             payload: {
                 email: 'john@doe.name',
                 surname: uuid(),

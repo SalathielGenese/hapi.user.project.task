@@ -12,183 +12,80 @@ const { beforeEach, afterEach, describe, it } = lab;
 describe( 'GET /tasks', () =>
 {
 
-    it( 'responds with HTTP 200', async () =>
+    it( 'responds with HTTP 200', async ({ context: { response } }) =>
     {
         expect( response.statusCode ).to.equal( 200 );
     });
 
-    it( 'responds with JSON body', async () =>
+    it( 'responds with JSON body', async ({ context: { response } }) =>
     {
         expect( () => JSON.parse( response.payload ) ).not.to.throw();
     });
 
-    it( 'responds with JSON body array', async () =>
+    it( 'responds with JSON body array', async ({ context: { response } }) =>
     {
         expect( JSON.parse( response.payload ) ).to.be.array();
     });
 
-    it( 'responds with JSON body matching $[*].{ name: string }', async () =>
+    it( 'responds with JSON body matching $[*].{ name: string }', async ({ context: { response } }) =>
     {
         const [ { name } ] = JSON.parse( response.payload );
 
         expect( name ).to.be.a.string();
     });
 
-    it( 'responds with JSON body matching $[*].{ description: string }', async () =>
+    it( 'responds with JSON body matching $[*].{ description: string }', async ({ context: { response } }) =>
     {
         const [ { description } ] = JSON.parse( response.payload );
 
         expect( description ).to.be.a.string();
     });
 
-    it( 'responds with JSON body matching $[*].{ score: number }', async () =>
+    it( 'responds with JSON body matching $[*].{ score: number }', async ({ context: { response } }) =>
     {
         const [ { score } ] = JSON.parse( response.payload );
 
         expect( score ).to.be.a.number();
     });
 
-    it( 'responds with JSON body matching $[*].{ score: number >= 1 }', async () =>
+    it( 'responds with JSON body matching $[*].{ score: number >= 1 }', async ({ context: { response } }) =>
     {
         const [ { score } ] = JSON.parse( response.payload );
 
         expect( score ).to.be.at.least( 1 );
     });
 
-    it( 'responds with JSON body matching $[*].{ status: "ACTIVE" | "INACTIVE" }', async () =>
+    it( 'responds with JSON body matching $[*].{ status: "ACTIVE" | "INACTIVE" }', async ({ context: { response } }) =>
     {
         const [ { status } ] = JSON.parse( response.payload );
 
         expect( status ).to.satisfies( Array.prototype.includes.bind( [ "ACTIVE", "INACTIVE" ] ) );
     });
 
-    it( 'responds with JSON body matching $[*].{ declined: boolean }', async () =>
+    it( 'responds with JSON body matching $[*].{ declined: boolean }', async ({ context: { response } }) =>
     {
         const [ { declined } ] = JSON.parse( response.payload );
 
         expect( declined ).to.be.a.boolean();
     });
 
-    it( 'responds with JSON body matching $[*].{ completed: boolean }', async () =>
+    it( 'responds with JSON body matching $[*].{ completed: boolean }', async ({ context: { response } }) =>
     {
         const [ { completed } ] = JSON.parse( response.payload );
 
         expect( completed ).to.be.a.boolean();
     });
 
-    let response;
-
     afterEach( async () =>
     {
         await server.stop();
     });
 
-    beforeEach( async () =>
+    beforeEach( async ({ context }) =>
     {
-        await server.start();
         await sequelize.sync({ force: true });
 
-        const assigner = await Users.create({
-            email: 'john@doe.name',
-            surname: uuid(),
-            name: uuid(),
-        }).then( user => user.get({ plain: true }) );
-        const project = await Projects.create({
-            status: 'ACTIVE',
-            completed: false,
-            declined: true,
-            name: uuid(),
-            assigner,
-        }).then( user => user.get({ plain: true }) );
-
-        await Tasks.create({
-            project,
-            name: uuid(),
-            declined: true,
-            completed: false,
-            status: 'ACTIVE',
-            description: uuid(),
-        });
-        response = await server.inject({ method: 'GET', url: '/api/tasks' });
-    });
-
-});
-
-describe( 'POST /tasks', () =>
-{
-
-    it( 'responds with HTTP 201', async () =>
-    {
-        expect( response.statusCode ).to.equal( 201 );
-    });
-
-    it( 'responds with JSON body', async () =>
-    {
-        expect( () => JSON.parse( response.payload ) ).not.to.throw();
-    });
-
-    it( 'responds with JSON body matching $.{ name: string }', async () =>
-    {
-        const { name } = JSON.parse( response.payload );
-
-        expect( name ).to.be.a.string();
-    });
-
-    it( 'responds with JSON body matching $.{ description: string }', async () =>
-    {
-        const { description } = JSON.parse( response.payload );
-
-        expect( description ).to.be.a.string();
-    });
-
-    it( 'responds with JSON body matching $.{ score: number }', async () =>
-    {
-        const { score } = JSON.parse( response.payload );
-
-        expect( score ).to.be.a.number();
-    });
-
-    it( 'responds with JSON body matching $.{ score: number >= 1 }', async () =>
-    {
-        const { score } = JSON.parse( response.payload );
-
-        expect( score ).to.be.at.least( 1 );
-    });
-
-    it( 'responds with JSON body matching $.{ status: "ACTIVE" | "INACTIVE" }', async () =>
-    {
-        const { status } = JSON.parse( response.payload );
-
-        expect( status ).to.satisfies( Array.prototype.includes.bind( [ "ACTIVE", "INACTIVE" ] ) );
-    });
-
-    it( 'responds with JSON body matching $.{ declined: boolean }', async () =>
-    {
-        const { declined } = JSON.parse( response.payload );
-
-        expect( declined ).to.be.a.boolean();
-    });
-
-    it( 'responds with JSON body matching $.{ completed: boolean }', async () =>
-    {
-        const { completed } = JSON.parse( response.payload );
-
-        expect( completed ).to.be.a.boolean();
-    });
-
-    let response;
-
-    afterEach( async () =>
-    {
-        await server.stop();
-    });
-
-    beforeEach( async () =>
-    {
-        await server.start();
-        await sequelize.sync({ force: true });
-
-        const assigner = await Users.create({
+        const { id: assignerId } = await Users.create({
             email: 'john@doe.name',
             surname: uuid(),
             name: uuid(),
@@ -198,10 +95,109 @@ describe( 'POST /tasks', () =>
             completed: false,
             declined: true,
             name: uuid(),
-            assigner,
+            assignerId,
         }).then( user => user.get({ plain: true }) );
 
-        response = await server.inject({
+        await Tasks.create({
+            description: uuid(),
+            status: 'ACTIVE',
+            completed: false,
+            declined: true,
+            name: uuid(),
+            projectId,
+        });
+        await server.start();
+        context.response = await server.inject({ method: 'GET', url: '/api/tasks' });
+    });
+
+});
+
+describe( 'POST /tasks', () =>
+{
+
+    it( 'responds with HTTP 201', async ({ context: { response } }) =>
+    {
+        expect( response.statusCode ).to.equal( 201 );
+    });
+
+    it( 'responds with JSON body', async ({ context: { response } }) =>
+    {
+        expect( () => JSON.parse( response.payload ) ).not.to.throw();
+    });
+
+    it( 'responds with JSON body matching $.{ name: string }', async ({ context: { response } }) =>
+    {
+        const { name } = JSON.parse( response.payload );
+
+        expect( name ).to.be.a.string();
+    });
+
+    it( 'responds with JSON body matching $.{ description: string }', async ({ context: { response } }) =>
+    {
+        const { description } = JSON.parse( response.payload );
+
+        expect( description ).to.be.a.string();
+    });
+
+    it( 'responds with JSON body matching $.{ score: number }', async ({ context: { response } }) =>
+    {
+        const { score } = JSON.parse( response.payload );
+
+        expect( score ).to.be.a.number();
+    });
+
+    it( 'responds with JSON body matching $.{ score: number >= 1 }', async ({ context: { response } }) =>
+    {
+        const { score } = JSON.parse( response.payload );
+
+        expect( score ).to.be.at.least( 1 );
+    });
+
+    it( 'responds with JSON body matching $.{ status: "ACTIVE" | "INACTIVE" }', async ({ context: { response } }) =>
+    {
+        const { status } = JSON.parse( response.payload );
+
+        expect( status ).to.satisfies( Array.prototype.includes.bind( [ "ACTIVE", "INACTIVE" ] ) );
+    });
+
+    it( 'responds with JSON body matching $.{ declined: boolean }', async ({ context: { response } }) =>
+    {
+        const { declined } = JSON.parse( response.payload );
+
+        expect( declined ).to.be.a.boolean();
+    });
+
+    it( 'responds with JSON body matching $.{ completed: boolean }', async ({ context: { response } }) =>
+    {
+        const { completed } = JSON.parse( response.payload );
+
+        expect( completed ).to.be.a.boolean();
+    });
+
+    afterEach( async () =>
+    {
+        await server.stop();
+    });
+
+    beforeEach( async ({ context }) =>
+    {
+        await sequelize.sync({ force: true });
+
+        const { id: assignerId } = await Users.create({
+            email: 'john@doe.name',
+            surname: uuid(),
+            name: uuid(),
+        }).then( user => user.get({ plain: true }) );
+        const { id: projectId } = await Projects.create({
+            status: 'ACTIVE',
+            completed: false,
+            declined: true,
+            name: uuid(),
+            assignerId,
+        }).then( user => user.get({ plain: true }) );
+
+        await server.start();
+        context.response = await server.inject({
             payload: {
                 description: uuid(),
                 status: 'ACTIVE',
