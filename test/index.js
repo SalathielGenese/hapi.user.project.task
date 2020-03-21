@@ -5,15 +5,7 @@ const Lab = require('@hapi/lab');
 
 
 
-function toPlain( model )
-{
-    return model.get({ plain: true });
-}
-
-
-
 module.exports = {
-    toPlain,
     expect,
     server,
     uuid,

@@ -69,7 +69,7 @@ lab.describe( 'GET /projects', () =>
             email: 'john@doe.name',
             surname: uuid(),
             name: uuid(),
-        }).then( user => user.get({ plain: true }) );
+        });
 
         await Projects.create({
             status: 'ACTIVE',
@@ -145,7 +145,7 @@ lab.describe( 'POST /projects', () =>
             email: 'john@doe.name',
             surname: uuid(),
             name: uuid(),
-        }).then( user => user.get({ plain: true }) );
+        });
 
         await server.start();
         context.response = await server.inject({

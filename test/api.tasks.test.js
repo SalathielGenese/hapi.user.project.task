@@ -83,14 +83,14 @@ lab.describe( 'GET /tasks', () =>
             email: 'john@doe.name',
             surname: uuid(),
             name: uuid(),
-        }).then( user => user.get({ plain: true }) );
+        });
         const { id: projectId } = await Projects.create({
             status: 'ACTIVE',
             completed: false,
             declined: true,
             name: uuid(),
             assignerId,
-        }).then( user => user.get({ plain: true }) );
+        });
 
         await Tasks.create({
             description: uuid(),
@@ -181,14 +181,14 @@ lab.describe( 'POST /tasks', () =>
             email: 'john@doe.name',
             surname: uuid(),
             name: uuid(),
-        }).then( user => user.get({ plain: true }) );
+        });
         const { id: projectId } = await Projects.create({
             status: 'ACTIVE',
             completed: false,
             declined: true,
             name: uuid(),
             assignerId,
-        }).then( user => user.get({ plain: true }) );
+        });
 
         await server.start();
         context.response = await server.inject({
